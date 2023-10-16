@@ -58,6 +58,11 @@ ul.leaders span + span {
     background: #E5E5E5;
 }
 
+.row {
+    margin-right: 0!important;
+    margin-left: 0!important;
+}
+
 .group-item {
     padding-top: 5px;
     padding-left: 15px;
@@ -93,7 +98,6 @@ ul.leaders span + span {
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 100px;
     width: 250px;
-    font-size: 24px;
     border: none!important;
     outline: none!important;
     margin-top: 20px;
@@ -114,9 +118,34 @@ ul.leaders span + span {
     background: rgb(23 22 22 / 61%);
 }
 
+#scroll-to-top {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: white;
+    width: 48px;
+    height: 48px;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+}
+
+#scroll-to-top.show {
+    display: flex !important;
+    cursor: pointer;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+#scroll-to-top img {
+    width: 36px;
+    height: 36px;
+    margin: auto;
+}
+
 /* responsive start */
 @media(max-width: 1080px) {
-    section.main-container {
+    section .main-container {
         margin-top: 56px;
     }
 }
@@ -132,5 +161,3 @@ ul.leaders span + span {
         height: fit-content !important;
     }
 }
-
-

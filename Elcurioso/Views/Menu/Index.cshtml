@@ -11,7 +11,7 @@
         <div class="home-page-top menu-home d-flex justify-content-center">
             <div class="food-menu-content d-flex flex-column justify-content-center text-center">
                 <h1>Menu</h1>
-                <button class="btn btn-warning custom-menu-button" id="custom-menu-template"></button>
+                <button class="btn btn-warning custom-menu-button" id="custom-menu-template" onclick="goToCategory(this)"></button>
 
                 <div class="d-flex justify-content-between justify-content-center flex-wrap" id="menu-list-container">
                 </div>
@@ -55,11 +55,32 @@
     </ul>
 </div>
 
+<a id="scroll-to-top">
+    <img src="~/images/scroll-to-top.png"/>
+</a>
+
 @section Scripts {
     <script src="~/js/menu.js"></script>
     <script>
         var menuContainer = $("#menu-container");
         var menuListContainer = $("#menu-list-container");
+        var scrollToTopIcon = $("#scroll-to-top");
+
+        var lastScrollTop = 200;
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 300) {
+                console.log("show");
+                scrollToTopIcon.addClass('show');
+            } else {
+                console.log("hidden");
+                scrollToTopIcon.removeClass('show');
+            }
+        });
+
+        scrollToTopIcon.on("click", function () {
+            window.scrollTo({ top: 0, behavior: 'smooth'});
+        });
+
         getMenuDetails();
         function getMenuDetails() {
             $.ajax({
@@ -96,6 +117,7 @@
                 var item = list[i];
                 var customMenuTemplate = $("#custom-menu-template").clone();
                 customMenuTemplate.removeAttr("id");
+                customMenuTemplate.attr("id", i.toString());
                 customMenuTemplate.text(item.Name);
                 menuListContainer.append(customMenuTemplate);
             }
@@ -103,13 +125,14 @@
 
         function drawProductList(list) {
             for (var i = 0; i < list.length; i++) {
-                var catTtem = list[i];
+                var catItem = list[i];
                 var categoryItemTemplate = $("#category-item-template").clone();
                 categoryItemTemplate.removeAttr("id");
-                categoryItemTemplate.find(".category-name").text(catTtem.Name);
+                categoryItemTemplate.attr("id", 'menu_' + i.toString());
+                categoryItemTemplate.find(".category-name").text(catItem.Name);
                 var groupList = categoryItemTemplate.find(".group-list");
-                for (var j = 0; j < catTtem.DeGroup.length; j++) {
-                    var groupItem = catTtem.DeGroup[j];
+                for (var j = 0; j < catItem.DeGroup.length; j++) {
+                    var groupItem = catItem.DeGroup[j];
                     var groupItemTemplate = $("#group-item-template").clone();
                     if (j % 3 == 0) {
                         groupItemTemplate.css("background", "#37A541");
@@ -133,13 +156,26 @@
                         if (productItem.DePrice != 0 || !productItem.DeGroupedPrices) {
                             productItemtemplate.find(".product-price").text("£" + productItem.DePrice.toFixed(2));
                         }
-                        
+
                         groupList.append(productItemtemplate);
                     }
                 }
 
                 menuContainer.append(categoryItemTemplate);
             }
+        }
+
+        function goToCategory(evt) {
+            $('html, body').animate({
+                scrollTop: ($('#menu_' + evt.id).offset().top - 120)
+            }, 100)
+        }
+
+        function ScrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         }
     </script>
 }

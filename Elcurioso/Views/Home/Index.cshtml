@@ -48,7 +48,7 @@
                     GREAT VARIETY <br>
                     OF DISHES
                 </h3>
-                <button class="btn btn-warning custom-button" (click)="viewMenu()">View Menu</button>
+                <button class="btn btn-warning custom-button" onclick="viewMenu()">View Menu</button>
             </div>
         </div>
         <div class="col-md-4">
@@ -57,7 +57,7 @@
                     GREAT VARIETY <br>
                     OF DISHES
                 </h3>
-                <button class="btn btn-warning custom-button" (click)="bookNow()">Book Now</button>
+                <button class="btn btn-warning custom-button" onclick="bookNow()">Book Now</button>
             </div>
         </div>
         <div class="col-md-4">
@@ -66,7 +66,7 @@
                     GREAT VARIETY <br>
                     OF DISHES
                 </h3>
-                <button class="btn btn-warning custom-button" (click)="viewDeals()">View Deals</button>
+                <button class="btn btn-warning custom-button" onclick="viewDeals()">View Deals</button>
             </div>
         </div>
     </div>
@@ -83,11 +83,11 @@
                 We offer paella, selection of tapas dishes, steaks,lamb, grills and pasta dishes
             </p>
             <div class="d-flex justify-content-between align-items-center button-container">
-                <button class="btn btn-outline-warning custom-button custom-button-outline" (click)="viewMenu()">
+                <button class="btn btn-outline-warning custom-button custom-button-outline" onclick="viewMenu()">
                     View
                     Menu
                 </button>
-                <button class="btn btn-warning custom-button" (click)="bookNow()">Book Now</button>
+                <button class="btn btn-warning custom-button" onclick="bookNow()">Book Now</button>
             </div>
         </div>
     </div>
@@ -126,6 +126,10 @@
                 hotProductItemPattern.find(".card-img-top").attr("src", '@imageDomain' + item.ImgUrl);
                 hotProductList.append(hotProductItemPattern);
             }
+        }
+
+        function viewMenu() {
+            location.href = "/menu";
         }
     </script>
 }
