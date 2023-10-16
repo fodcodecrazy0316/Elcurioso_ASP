@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="Views\Menu\" />
+    <Folder Include="Service\" />
+    <Folder Include="TGFLibrary\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\Menu\" />
+    <None Remove="Service\" />
+    <None Remove="TGFLibrary\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WinPizzaData">
+      <HintPath>TGFLibrary\WinPizzaData.dll</HintPath>
+    </Reference>
+    <Reference Include="WinPizzaService20014">
+      <HintPath>TGFLibrary\WinPizzaService20014.dll</HintPath>
+    </Reference>
+    <Reference Include="WPUtility">
+      <HintPath>TGFLibrary\WPUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,195 @@
+﻿.deal-event-home {
+    background: url("../images/deals-100.jpg");
+    color: #fff;
+    font-family: 'Architects Daughter', cursive;
+}
+
+.deal-event-home-container::after, .great-deals::after, .food-menu:after, .home-three:after, .contact-us-home::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    background: rgb(23 22 22 / 61%);
+}
+
+.no-gutters .col-md-3 {
+    position: relative;
+}
+
+#hot-product-item-pattern {
+    display: none;
+}
+
+.triangle {
+    z-index: 1;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    top: 21px;
+    left: 55px;
+}
+
+.mb-4 .col-md-3 {
+    position: relative;
+}
+
+#hot-product-item-pattern {
+    display:none;
+}
+
+.custom-card {
+    width: 100%;
+    margin-left: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+.card-img-top {
+    height: 250px !important;
+}
+
+.custom-card .hot-item-tag {
+    z-index: 90;
+    position: absolute;
+    left: 40px;
+    width: 100px;
+    height: 100px;
+    color: #000;
+}
+
+.custom-card .hot-item-tag::before {
+    content: "";
+    position: absolute;
+    border-left: 0px solid #0000;
+    border-right: 2px solid #0000;
+    border-top: 0px solid #0000;
+    border-bottom: 2px solid #0000;
+    width: 50px;
+    height: 50px;
+    top: 100%;
+    left: 22%;
+    transform: rotate(45deg);
+    margin-top: -25px;
+}
+
+.custom-card .hot-item-tag p {
+    transform: rotate(-20deg);
+    font-family: 'Architects Daughter', cursive;
+    font-size: 24px;
+    text-align: center;
+}
+
+.card-body a {
+    width: 100%;
+}
+
+.featued-menu {
+    height: 400px;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.feature-row {
+    height: 100%;
+    --bs-gutter-x: 0 !important;
+}
+
+.index-bottom-left,
+.index-bottom-middle,
+.index-bottom-right {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.index-bottom-left h3,
+.index-bottom-middle h3,
+.index-bottom-right h3 {
+    color: #fff;
+    font-size: 37px;
+    font-family: 'Architects Daughter', cursive;
+}
+
+.index-bottom-left .custom-button,
+.index-bottom-middle .custom-button,
+.index-bottom-right .custom-button {
+    width: 50%;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.index-bottom-left {
+    background: #24B2A8;
+}
+
+.index-bottom-middle {
+    background: #37A541;
+}
+
+.index-bottom-right {
+    background: #9E17A5;
+}
+
+.great-deals {
+    background: url('../images/landing-menu-back-100.jpg');
+    background-size: cover;
+    height: 100vh;
+    position: relative;
+}
+
+.great-deals .great-deals-inner {
+    z-index: 1;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.great-deals .great-deals-inner .item-holder {
+    height: 100%;
+    z-index: 2;
+}
+
+.great-deals .great-deals-inner .item-holder .button-container {
+    width: 50%;
+}
+
+.great-deals .great-deals-inner .item-holder .button-container .custom-button {
+    flex: 1;
+}
+
+.great-deals .great-deals-inner .item-holder h1 {
+    font-family: 'Architects Daughter', cursive;
+    font-size: 50px;
+    text-align: center;
+}
+
+.great-deals .great-deals-inner .item-holder p {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.great-deals .great-deals-inner .item-holder .custom-button-outline {
+    background: none !important;
+    margin-right: 10px;
+}
+
+@media(max-width: 767px) {
+    .featued-menu {
+        height: auto !important;
+        max-height: inherit;
+    }
+
+
+    .no-gutters {
+        --bs-gutter-x: 0 !important;
+    }
+}

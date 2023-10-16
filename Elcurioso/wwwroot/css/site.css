@@ -1,0 +1,153 @@
+﻿html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/*.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+*/
+.custom-navbar .navbar-nav {
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.custom-navbar .navbar-nav .nav-item .nav-link {
+    color: #fff !important;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+.custom-navbar-logo img {
+    width: 200px;
+    height: 100px;
+}
+
+nav {
+    position: fixed!important;
+    z-index: 99;
+    width: 100%;
+    top: 0;
+}
+
+section.main-container {
+    margin-top: 126px;
+    width: 100%;
+    position: relative;
+}
+
+.footer {
+    background-color: #0470B4;
+    padding: 50px 20px 20px;
+    color: #fff!important;
+    position: relative;
+}
+
+.footer .find-us i {
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 20px;
+}
+
+.footer .find-us {
+    display: flex;
+    align-items: center;
+}
+
+.ml-2, .mx-2 {
+    margin-left: 0.5rem !important;
+}
+
+
+.footer-ssl {
+    position: absolute;
+    bottom: 72px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    left: 0;
+}
+
+.footer-ssl img {
+    height: auto;
+    width: 200px;
+}
+
+@media(max-width: 767px) {
+    .footer-ssl {
+        bottom: 142px;
+    }
+}
+
+.ids-ripple-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.7);
+    top: 0;
+}
+
+.lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.lds-ripple div {
+    position: absolute;
+    border: 4px solid #fff;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+}
+
+@keyframes lds-ripple {
+    0% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    4.9% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    5% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        top: 0px;
+        left: 0px;
+        width: 72px;
+        height: 72px;
+        opacity: 0;
+    }
+}

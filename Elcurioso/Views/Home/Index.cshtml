@@ -1,0 +1,131 @@
+﻿@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "Home Page";
+    string imageDomain = Configuration.GetValue(typeof(string), "imageDomain").ToString();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" />
+}
+
+<section class="main-container deal-event-home-container" style="background-color:transparent;height:0">
+    <div class="home-page-top deal-event-home d-flex justify-content-center" style="height:250px;">
+        <div class="d-flex contact-us-header flex-column justify-content-center">
+            <!--<h1>DEALS & EVENTS</h1>-->
+            <div class="container mb-4">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mb-4">
+    <div class="col-md-3" id="hot-product-item-pattern">
+        <img class="triangle" src="~/images/triangle.png" />
+        <div class="card custom-card" style="margin-top: 20px;">
+            <img alt="Card image cap" class="card-img-top" />
+            <div class="hot-item-tag">
+                <p style="padding-top: 15px; z-index: 2" class="hot-item-name"></p>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Every Thursday is cuban cocktail night .Any 2 cuban cocktails only $ 10</p>
+                <a href="/booknow" class="btn btn-warning custom-button" style="text-decoration: none">
+                    Book Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row no-gutters mb-3" id="hot-product-list">
+
+    </div>
+</div>
+
+<section class="featued-menu">
+    <div class="row no-gutters feature-row">
+        <div class="col-md-4">
+            <div class="index-bottom-left">
+                <h3>
+                    GREAT VARIETY <br>
+                    OF DISHES
+                </h3>
+                <button class="btn btn-warning custom-button" (click)="viewMenu()">View Menu</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="index-bottom-middle">
+                <h3>
+                    GREAT VARIETY <br>
+                    OF DISHES
+                </h3>
+                <button class="btn btn-warning custom-button" (click)="bookNow()">Book Now</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="index-bottom-right">
+                <h3>
+                    GREAT VARIETY <br>
+                    OF DISHES
+                </h3>
+                <button class="btn btn-warning custom-button" (click)="viewDeals()">View Deals</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="great-deals">
+    <div class="great-deals-inner">
+        <div class="d-flex  flex-column justify-content-center align-items-center item-holder">
+            <h1>
+                ENJOY OUR GREAT <br>
+                VARIETY OF DISHES
+            </h1>
+            <p>
+                We offer paella, selection of tapas dishes, steaks,lamb, grills and pasta dishes
+            </p>
+            <div class="d-flex justify-content-between align-items-center button-container">
+                <button class="btn btn-outline-warning custom-button custom-button-outline" (click)="viewMenu()">
+                    View
+                    Menu
+                </button>
+                <button class="btn btn-warning custom-button" (click)="bookNow()">Book Now</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        var hotProductList = $("#hot-product-list");
+
+        getHotProductList();
+
+        function getHotProductList() {
+            $.ajax({
+                url: "@Url.Action("getMenuDetails", "Menu")",
+                type: 'Post',
+                cache: false,
+                success: function (response) {
+                    var catList = JSON.parse(JSON.parse(response).WinPizzaObject);
+                    var filteredList = catList.filter(x => x.CatType === 3);
+                    var hotProductList = filteredList[0].DeGroup[0].DeProducts;
+
+                    drawHotProductList(hotProductList);
+
+                    hideLoader();
+                }
+            })
+        }
+
+        function drawHotProductList(list) {
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i];
+                var hotProductItemPattern = $("#hot-product-item-pattern").clone();
+                hotProductItemPattern.removeAttr("id");
+                hotProductItemPattern.find(".hot-item-name").text(item.Name);
+                hotProductItemPattern.find(".card-text").text(item.Desc);
+                hotProductItemPattern.find(".card-img-top").attr("src", '@imageDomain' + item.ImgUrl);
+                hotProductList.append(hotProductItemPattern);
+            }
+        }
+    </script>
+}

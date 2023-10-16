@@ -1,0 +1,136 @@
+﻿.image-header {
+    font-family: 'Architects Daughter', cursive;
+}
+
+.image-header h2 {
+    font-size: 68px;
+}
+
+.image-header .middle-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.middle-text h2 {
+    font-size: 50px;
+    z-index: 1;
+}
+
+.no-gaps div img {
+    width: 100% !important;
+}
+
+ul.leaders {
+    max-width: 40em;
+    padding: 0;
+    overflow-x: hidden;
+    list-style: none;
+}
+
+ul.leaders li {
+    margin: 30px 0px;
+}
+
+ul.leaders span:first-child {
+    padding-right: 0.33em;
+    background: #E5E5E5;
+    font-size: 20px;
+}
+
+ul.leaders li:before {
+    float: left;
+    width: 0;
+    white-space: nowrap;
+    margin-top: 7px;
+    content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . ";
+}
+
+ul.leaders span + span {
+    float: right;
+    padding-left: 0.33em;
+    background: #E5E5E5;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.category-item {
+    background: #E5E5E5;
+}
+
+.group-item {
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    text-align: center;
+    color: #fff;
+}
+
+.food-menu {
+    height: 60vh !important;
+}
+
+.food-menu .menu-home {
+    background: url("../images/menu-100.jpg");
+    height: 100%;
+    color: #fff;
+    font-family: 'Architects Daughter', cursive;
+}
+
+.food-menu .menu-home .food-menu-content {
+    z-index: 1;
+    padding-right: 13px;
+}
+
+.food-menu .menu-home .food-menu-content h1 {
+    font-size: 73px;
+}
+
+.custom-menu-button {
+    border-color: #fff;
+    margin-left: 20px;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 100px;
+    width: 250px;
+    font-size: 24px;
+    border: none!important;
+    outline: none!important;
+    margin-top: 20px;
+}
+
+#custom-menu-template, #category-item-template, #group-item-template, #product-item-template {
+    display: none;
+}
+
+.food-menu:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    background: rgb(23 22 22 / 61%);
+}
+
+/* responsive start */
+@media(max-width: 1080px) {
+    section.main-container {
+        margin-top: 56px;
+    }
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1080px) {
+    section.main-container {
+        margin-top: 56px;
+    }
+}
+
+@media(max-width: 767px) {
+    .main-container {
+        height: fit-content !important;
+    }
+}
+
+
