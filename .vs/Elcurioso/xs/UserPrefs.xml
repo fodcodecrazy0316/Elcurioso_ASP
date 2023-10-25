@@ -1,0 +1,40 @@
+﻿<Properties StartupConfiguration="{F7E79489-E6CC-4635-B2E0-5EFD9252768A}|https">
+  <MonoDevelop.Ide.ItemProperties.Elcurioso PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Elcurioso/Views/BookNow/Index.cshtml">
+    <Files>
+      <File FileName="Elcurioso/Views/Shared/_Layout.cshtml" />
+      <File FileName="Elcurioso/Controllers/BookNowController.cs" Line="2" Column="32" />
+      <File FileName="Elcurioso/Views/BookNow/Index.cshtml" Line="49" Column="10" />
+      <File FileName="Elcurioso/Views/Menu/Index.cshtml" Line="85" Column="36" />
+      <File FileName="Elcurioso/Service/CoreService.cs" Line="34" Column="1" />
+      <File FileName="Elcurioso/wwwroot/js/site.js" Line="11" Column="24" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Elcurioso" expanded="True">
+            <Node name="Elcurioso">
+              <Node name="Views">
+                <Node name="BookNow" expanded="True">
+                  <Node name="Index.cshtml" selected="True" />
+                </Node>
+                <Node name="Home" expanded="True" />
+                <Node name="Shared" expanded="True" />
+              </Node>
+              <Node name="wwwroot">
+                <Node name="css" expanded="True" />
+              </Node>
+              <Node name="appsettings.json" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+</Properties>

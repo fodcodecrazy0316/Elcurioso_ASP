@@ -1,0 +1,491 @@
+﻿@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "BookNow page";
+    String imageDomain = Configuration.GetValue(typeof(string), "imageDomain").ToString();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/book_now.css" />
+    <link rel="stylesheet" href="~/lib/datepicker/datepicker.css"/>
+    <style>
+        #booking-time-item {
+            display: none;
+        }
+
+        #booking-time-list {
+            padding: 16px;
+            text-align: center;
+        }
+
+        #booking-time-date {
+            width: 160px;
+            height: 48px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: rgba(0,0,0,0.25);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-header {
+            justify-content: center;
+        }
+
+        .modal-header .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            right: 10px;
+            top: -2px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 0!important;
+        }
+
+        .modal-dialog {
+            background: #0470B4;
+            width: 100%;
+            pointer-events: auto;
+            min-height: 60vh;
+        }
+
+        .booking-time-list-header {
+            text-align: center;
+            font-size: 20px;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .booking-item-button {
+            background: blue;
+            border: none;
+            outline: none;
+            box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+            color: white;
+            width: 100px;
+            height: 48px;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+
+        #booking-form {
+            background: white;
+            padding-bottom: 30px;
+        }
+
+        .no-available {
+            width: fit-content !important;
+        }
+
+
+        /* The container */
+        .checkbox-container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default checkbox */
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        /* Create a custom checkbox */
+        .checkmark {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: 25px;
+            width: 25px;
+            background-color: #FFF;
+            border: 2px solid gray;
+            border-radius: 4px;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .checkbox-container:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #f44336;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .checkbox-container .checkmark:after {
+            left: 5px;
+            top: 0;
+            width: 10px;
+            height: 16px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .booking-form-row {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .booking-form-row .w-70 {
+            width: 70%;
+        }
+
+        .booking-form-row .w-50 {
+            width: 50%;
+        }
+
+        .booking-form-row .w-30 {
+            width: 30%;
+        }
+
+        .elcurioso-label {
+            font-weight: 400;
+            display: block;
+            padding-bottom: 5px;
+            font-size: 20px;
+            line-height: 1.43;
+            text-align: left;
+            color: gray;
+        }
+
+        .elcurioso-input {
+            font-size: 1.35rem;
+            line-height: 1.5;
+            padding: 3px;
+            width: 100%;
+            border: 1px solid #dbd9d7;
+            border-radius: 8px;
+        }
+
+        .complete-booking-button {
+            background-color: #f44336;
+            width: 80%;
+            height: 36px;
+            color: white;
+            outline: none;
+            border: none;
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+        }
+    </style>
+}
+
+<section class="main-container book-now-container">
+    <div class="index-highlight">
+        <div class="top-text d-flex justify-content-center">
+            <div style="display:flex; justify-content: center; align-items: center">
+                <a href="/">
+                    <img src="~/images/logo-main.png" style="height: auto; width: 300px;" />
+                </a>
+            </div>
+        </div>
+        <div class="navigation">
+            <div class="d-flex flex-wrap justify-content-between">
+                <a class="menu-item" href="/menu">Menu</a>
+                <a class="menu-item" href="/">
+                    <img src="~/images/Offers200.png" style="height: 70px; width: 90px;" />
+                </a>
+                <a class="menu-item" href="/contact-us">Contact Us</a>
+            </div>
+        </div>
+        <div class="bottom-text">
+            <h3>SPANISH AND CUBAN CUISINE</h3>
+            <div class="book-field">
+                <div class="pick-containers">
+                    <div class="pick-date-container">
+                        <label>Choose a date</label>
+                        <div class="pick-date-input">
+                            <input type="text" data-toggle="datepicker" readonly/>
+                            <i class="fa fa-calendar icon"></i>
+                        </div>
+                    </div>
+                    <div class="pick-people-container">
+                        <label>Number of adult</label>
+                        <div>
+                            <select class="dropdown-select">
+                                <option>1 people</option>
+                                <option>2 people</option>
+                                <option>3 people</option>
+                                <option>4 people</option>
+                                <option>5 people</option>
+                                <option>6 people</option>
+                                <option>7 people</option>
+                                <option>8 people</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pick-child-container">
+                        <label>Number of childs</label>
+                        <div>
+                            <select class="dropdown-select">
+                                <option>0 child</option>
+                                <option>1 child</option>
+                                <option>2 childs</option>
+                                <option>3 childs</option>
+                                <option>4 childs</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="check-now-container">
+                    <button class="check-now-button" onclick="checkNow()">Check Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal" id="time_list_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+            <div id="booking-time-date"></div>
+            <div class="close" onclick="closeTimeListModal()">×</div>
+        </div>
+        <div class="modal-body">
+            <button class="booking-item-button" id="booking-time-item" onclick="selectBookingTime()"></button>
+            <div class="booking-time-list-header">Booking available times</div>
+            <div id="booking-time-list"></div>
+            <div id="booking-form">
+                <div class="booking-form-row">
+                    <div class="w-50">
+                        <label class="elcurioso-label">First name<sup>*</sup></label>
+                        <input class="elcurioso-input"/>
+                    </div>
+                    <div class="w-50">
+                        <label class="elcurioso-label">Last name<sup>*</sup></label>
+                        <input class="elcurioso-input" />
+                    </div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="w-30">
+                        <label class="elcurioso-label">Select Country<sup>*</sup></label>
+                        <select class="elcurioso-input">
+                            <option>UK (+44)</option>
+                            <option>DE (+49)</option>
+                            <option>US (+1)</option>
+                        </select>
+                    </div>
+                    <div class="w-70">
+                        <label class="elcurioso-label">Phone number start without 0<sup>*</sup></label>
+                        <input class="elcurioso-input"/>
+                    </div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="w-50">
+                        <label class="elcurioso-label">Select an occasion(optional)</label>
+                        <select class="elcurioso-input">
+                            <option>Select </option>
+                            <option>DE (+49)</option>
+                            <option>US (+1)</option>
+                        </select>
+                    </div>
+                    <div class="w-50">
+                        <label class="elcurioso-label">Add a special request(optional)</label>
+                        <input class="elcurioso-input"/>
+                    </div>
+                </div>
+                <div class="booking-form-row" style="flex-direction: column; align-items: flex-start">
+                    <label class="checkbox-container">
+                        Sign me up to receive dining offers and news from this restaurant by email.
+                        <input type="checkbox"  />
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-container">
+                        Yes, I want to get text updates and reminders about my bookings.
+                        <input type="checkbox" />
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="booking-form-row" style="justify-content: center;">
+                    <button class="complete-booking-button">Complete Booking</button>
+                </div>
+
+                <div class="booking-form-row">
+                    <span >
+                    By clicking "Complete Booking" you agree to the
+                    <a  style="color: red;">Elcurioso Terms of use</a> and
+                    <a  style="color: red;">Privacy Policy</a>
+                    .Standard text message rates may apply.You many opt out of receiving text messages at any time.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/datepicker/datepicker.js"></script>
+    <script>
+        hideLoader();
+        var datePicker = $('[data-toggle="datepicker"]');
+        var bookingTimeDate = $("#booking-time-date");
+        var bookingTimeList = $("#booking-time-list");
+        var bookingTimeListModal = $("#time_list_modal");
+        var dateTime = "";
+
+        datePicker.datepicker({
+            startDate: new Date(),
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShoart: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Mov', 'Dec']
+        });
+        datePicker.datepicker('setDate', new Date());
+
+        function checkNow() {
+            showLoader();
+            dateTime = datePicker.val();
+            var dateTimeList = dateTime.split("/");
+            var year = parseInt(dateTimeList[2]);
+            var month = parseInt(dateTimeList[1]) - 1;
+            var day = parseInt(dateTimeList[0]);
+            var unformatedDate = new Date(Date.UTC(year, month, day));
+            var currentTime = JSON.stringify(unformatedDate);
+            $.ajax({
+                url: "@Url.Action("getTimesList", "BookNow")",
+                type: 'Post',
+                data: { currentTime: currentTime},
+                success: function (response) {
+                    var timeList = JSON.parse(JSON.parse(response).WinPizzaObject);
+                    drawBookingTimeListModal(timeList);
+                }
+            });
+        }
+
+        function drawBookingTimeListModal(timeList) {
+            bookingTimeListModal.css("display", "flex");
+            bookingTimeDate.text(dateTime);
+            var _timeList = getTimesAva(timeList);
+
+            bookingTimeList.empty();
+            if (_timeList.length == 0) {
+                var text = "There are no availability or resturant is closed. try different date.";
+                var _bookingTimeItem = $("#booking-time-item").clone();
+                _bookingTimeItem.removeAttr("id");
+                _bookingTimeItem.text(text);
+                _bookingTimeItem.addClass("no-available");
+                bookingTimeList.append(_bookingTimeItem);
+            } else {
+                for (var i = 0; i < _timeList.length; i++) {
+                    var _time = _timeList[i];
+                    var _bookingTimeItem = $("#booking-time-item").clone();
+                    _bookingTimeItem.removeAttr("id");
+                    _bookingTimeItem.text(_time);
+                    bookingTimeList.append(_bookingTimeItem);
+                }
+            }
+            
+            hideLoader();
+        }
+
+        function getTimesAva(openingTimeResult) {
+            let times = [];
+            let today = new Date();
+            for (let z = 0; z < openingTimeResult.length; z++) {
+                var openingTimeItem = openingTimeResult[z];
+                if (openingTimeItem) {
+                    if (openingTimeItem.start != null) {
+                        let sDate = new Date(openingTimeItem.start.dateTime);
+                        let eDate = new Date(openingTimeItem.end.dateTime);
+
+                        var isToday = confirmTheDateIsToday(sDate, today);
+                        var hrs = today.getHours();
+                        var mins = today.getMinutes();
+
+                        for (let x = 0; sDate.getTime() < eDate.getTime(); x++) {
+                            var ff = "";
+
+                            if (!isToday) {
+                                if (sDate.getMinutes() == 0) {
+                                    ff = sDate.getHours().toString() + ":00";
+                                } else {
+                                    ff = sDate.getHours().toString() + ":" + sDate.getMinutes().toString();
+                                }
+                                times.push(ff);
+                            } else {
+                                if (today.getTime() < sDate.getTime()) {
+                                    if (sDate.getMinutes() == 0) {
+                                        ff = sDate.getHours().toString() + ":00";
+                                    } else {
+                                        ff = sDate.getHours().toString() + ":" + sDate.getMinutes().toString();
+                                    }
+                                    times.push(ff);
+                                }
+                            }
+                            
+                            sDate = addMins(sDate, 30);
+                        }
+                        
+                        if (times.length == 0) {
+                            //times.push("There are no availability or resturant is closed. try different date.");
+                        }
+                    }
+                }
+            }
+
+            return times;
+        }
+
+        function addMins(aDate, Min) {
+            var copiedDate = new Date(aDate.getTime());
+            copiedDate.setMinutes(copiedDate.getMinutes() + Min);
+            return copiedDate;
+        }
+
+        function confirmTheDateIsToday(sDate, today) {
+            if (sDate.getFullYear() == today.getFullYear() && sDate.getMonth() == today.getMonth() && sDate.getDay() == today.getDay()) {
+                return true;
+            }
+            return false;
+        }
+
+        function closeTimeListModal() {
+            bookingTimeListModal.css("display", "none");
+        }
+
+        function selectBookingTime() {
+
+        }
+    </script>
+}

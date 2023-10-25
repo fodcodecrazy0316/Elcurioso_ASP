@@ -8,6 +8,10 @@ function hideLoader() {
     lds_ripple_loader.hide();
 }
 
+function showLoader() {
+    lds_ripple_loader.show();
+}
+
 function goFaceBookPage() {
     location.href = "https://en-gb.facebook.com/CoachNHorses/";
 }

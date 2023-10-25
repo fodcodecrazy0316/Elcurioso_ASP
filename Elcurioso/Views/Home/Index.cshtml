@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Home Page";
     string imageDomain = Configuration.GetValue(typeof(string), "imageDomain").ToString();
-}
+}   
 
 @section Styles {
     <link rel="stylesheet" href="~/css/home.css" />
@@ -130,6 +130,10 @@
 
         function viewMenu() {
             location.href = "/menu";
+        }
+
+        function bookNow() {
+            location.href = "/booknow";
         }
     </script>
 }

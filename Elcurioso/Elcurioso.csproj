@@ -13,17 +13,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\" />
+    <Content Remove="wwwroot\lib\datepicker\" />
+    <Content Remove="wwwroot\fonts\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
     <Folder Include="Views\Menu\" />
     <Folder Include="Service\" />
     <Folder Include="TGFLibrary\" />
+    <Folder Include="Views\BookNow\" />
+    <Folder Include="wwwroot\lib\datepicker\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\Menu\" />
     <None Remove="Service\" />
     <None Remove="TGFLibrary\" />
+    <None Remove="Views\BookNow\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WinPizzaData">

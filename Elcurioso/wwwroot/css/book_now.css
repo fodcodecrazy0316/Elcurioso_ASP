@@ -1,0 +1,133 @@
+﻿body {
+    margin: 0!important;
+}
+
+nav {
+    display: none !important;
+}
+
+.main-container {
+    height: 100vh;
+    width: 100%;
+    margin-top: 0!important;
+}
+
+.book-now-container {
+    background: url("/images/index-back.jpg");
+    background-size: cover !important;
+}
+
+.index-highlight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 100%;
+}
+
+.index-highlight .top-text {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+}
+
+.index-highlight .navigation {
+    flex-basis: 10%;
+}
+
+.index-highlight .bottom-text {
+    flex-basis: 50%;
+}
+
+.navigation {
+    width: 60%;
+}
+
+.navigation .d-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navigation a {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 10px;
+    font-family: system-ui;
+}
+
+.navigation .book-now-menu {
+    color: #000;
+}
+
+.bottom-text h3 {
+    font-family: 'Architects Daughter', cursive;
+    color: #fff;
+    font-size: 90px;
+    margin: 0;
+}
+
+.book-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.book-field label {
+    color: rgba(0,0,0,.6);
+    font-size: 12px;
+}
+
+.book-field input, .book-field select {
+    font-size: 14px;
+    line-height: 1.5;
+    width: 180px;
+    height: 42px;
+    border: 1px solid lightgray;
+    border-radius: 2px;
+}
+
+.pick-containers {
+    display: flex;
+    align-items: center;
+}
+
+.pick-date-container, .pick-people-container {
+    border-right: 1px solid black;
+}
+
+.pick-date-container, .pick-people-container, .pick-child-container {
+    background: white;
+    padding: 6px 12px;
+    width: fit-content;
+}
+
+.pick-date-input {
+    position: relative;
+}
+
+.pick-date-input i {
+    position: absolute;
+    padding: 15px;
+    right: 0;
+    top: 0;
+}
+
+.check-now-button {
+    background-color: #3f51b5;
+    height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+    outline: none !important;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
