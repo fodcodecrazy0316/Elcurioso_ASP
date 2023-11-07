@@ -12,9 +12,17 @@ namespace Elcurioso.Controllers
     public class MenuController : Controller
     {
         private readonly IConfiguration _config;
+        public string storeID;
+        public string imageDomain;
+        public string menuID;
+        public string userPinMsg;
         public MenuController(IConfiguration config)
         {
             _config = config;
+            storeID = _config.GetSection("StoreID").Value;
+            imageDomain = _config.GetSection("imageDomain").Value;
+            menuID = _config.GetSection("MenuID").Value;
+            userPinMsg = _config.GetSection("UsePinMsg").Value;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -25,9 +33,6 @@ namespace Elcurioso.Controllers
 
         public async Task<IActionResult> getMenuDetails()
         {
-            string storeID = _config.GetSection("StoreID").Value;
-            string imageDomain = _config.GetSection("imageDomain").Value;
-            string menuID = _config.GetSection("MenuID").Value;
             var result = await CoreService.LoadMenuList(storeID, imageDomain, menuID);
             return Ok(result);
         }

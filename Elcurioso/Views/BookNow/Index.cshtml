@@ -57,6 +57,8 @@
             width: 100%;
             pointer-events: auto;
             min-height: 60vh;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .booking-time-list-header {
@@ -76,6 +78,10 @@
             height: 48px;
             margin-right: 12px;
             margin-bottom: 12px;
+        }
+
+        .booking-item-button-active {
+            background-color: red!important;
         }
 
         #booking-form {
@@ -205,6 +211,10 @@
             border: none;
             box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
         }
+
+        #booking-form {
+            display: none;
+        }
     </style>
 }
 
@@ -280,73 +290,77 @@
             <div class="close" onclick="closeTimeListModal()">×</div>
         </div>
         <div class="modal-body">
-            <button class="booking-item-button" id="booking-time-item" onclick="selectBookingTime()"></button>
+            <button class="booking-item-button" id="booking-time-item" onclick="selectBookingTime(this)"></button>
             <div class="booking-time-list-header">Booking available times</div>
             <div id="booking-time-list"></div>
-            <div id="booking-form">
+            <form id="booking-form" onsubmit="completeBooking()">
                 <div class="booking-form-row">
                     <div class="w-50">
                         <label class="elcurioso-label">First name<sup>*</sup></label>
-                        <input class="elcurioso-input"/>
+                        <input class="elcurioso-input" type="text" required />
                     </div>
                     <div class="w-50">
                         <label class="elcurioso-label">Last name<sup>*</sup></label>
-                        <input class="elcurioso-input" />
+                        <input class="elcurioso-input" type="text" required />
                     </div>
                 </div>
                 <div class="booking-form-row">
                     <div class="w-30">
                         <label class="elcurioso-label">Select Country<sup>*</sup></label>
-                        <select class="elcurioso-input">
-                            <option>UK (+44)</option>
-                            <option>DE (+49)</option>
-                            <option>US (+1)</option>
+                        <select class="elcurioso-input" id="selectCountryNumber">
+                            <option value="+44">UK (+44)</option>
+                            <option value="+49">DE (+49)</option>
+                            <option value="+1">US (+1)</option>
                         </select>
                     </div>
                     <div class="w-70">
                         <label class="elcurioso-label">Phone number start without 0<sup>*</sup></label>
-                        <input class="elcurioso-input"/>
+                        <input class="elcurioso-input" id="phoneNumber" type="tel" min="10" max="10" required />
                     </div>
+                </div>
+                <div class="booking-form-row" style="flex-direction: column;align-items: flex-start;gap: 0;">
+                        <label class="elcurioso-label">Email<sup>*</sup></label>
+                        <input class="elcurioso-input" type="email" required formnovalidate/>
                 </div>
                 <div class="booking-form-row">
                     <div class="w-50">
                         <label class="elcurioso-label">Select an occasion(optional)</label>
                         <select class="elcurioso-input">
-                            <option>Select </option>
-                            <option>DE (+49)</option>
-                            <option>US (+1)</option>
+                            <option value="birthday">Birthday</option>
+                            <option value="anniversary">Anniversary</option>
+                            <option value="date-night">Date night</option>
                         </select>
                     </div>
                     <div class="w-50">
                         <label class="elcurioso-label">Add a special request(optional)</label>
-                        <input class="elcurioso-input"/>
+                        <input class="elcurioso-input" />
                     </div>
                 </div>
                 <div class="booking-form-row" style="flex-direction: column; align-items: flex-start">
                     <label class="checkbox-container">
                         Sign me up to receive dining offers and news from this restaurant by email.
-                        <input type="checkbox"  />
+                        <input type="checkbox" checked />
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container">
                         Yes, I want to get text updates and reminders about my bookings.
-                        <input type="checkbox" />
+                        <input type="checkbox" checked />
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div class="booking-form-row" style="justify-content: center;">
-                    <button class="complete-booking-button">Complete Booking</button>
+                    <input class="complete-booking-button" type="submit" value="Complete Booking">
                 </div>
 
                 <div class="booking-form-row">
-                    <span >
-                    By clicking "Complete Booking" you agree to the
-                    <a  style="color: red;">Elcurioso Terms of use</a> and
-                    <a  style="color: red;">Privacy Policy</a>
-                    .Standard text message rates may apply.You many opt out of receiving text messages at any time.
+                    <span>
+                        By clicking "Complete Booking" you agree to the
+                        <a style="color: red;">Elcurioso Terms of use</a> and
+                        <a style="color: red;">Privacy Policy</a>
+                        .Standard text message rates may apply.You many opt out of receiving text messages at any time.
                     </span>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -360,6 +374,7 @@
         var bookingTimeList = $("#booking-time-list");
         var bookingTimeListModal = $("#time_list_modal");
         var dateTime = "";
+        var bookingFormContainer = $("#booking-form");
 
         datePicker.datepicker({
             startDate: new Date(),
@@ -399,6 +414,7 @@
             var _timeList = getTimesAva(timeList);
 
             bookingTimeList.empty();
+            bookingFormContainer.css("display", "none");
             if (_timeList.length == 0) {
                 var text = "There are no availability or resturant is closed. try different date.";
                 var _bookingTimeItem = $("#booking-time-item").clone();
@@ -411,11 +427,12 @@
                     var _time = _timeList[i];
                     var _bookingTimeItem = $("#booking-time-item").clone();
                     _bookingTimeItem.removeAttr("id");
+                    _bookingTimeItem.attr("data-val", _time);
                     _bookingTimeItem.text(_time);
                     bookingTimeList.append(_bookingTimeItem);
                 }
             }
-            
+
             hideLoader();
         }
 
@@ -453,10 +470,10 @@
                                     times.push(ff);
                                 }
                             }
-                            
+
                             sDate = addMins(sDate, 30);
                         }
-                        
+
                         if (times.length == 0) {
                             //times.push("There are no availability or resturant is closed. try different date.");
                         }
@@ -484,8 +501,29 @@
             bookingTimeListModal.css("display", "none");
         }
 
-        function selectBookingTime() {
+        function selectBookingTime(evt) {
+            if (evt.innerText != "") {
+                $("#booking-time-list .booking-item-button-active").removeClass("booking-item-button-active");
+                evt.classList.add("booking-item-button-active")
+                bookingFormContainer.show();
+            }
+        }
 
+        function completeBooking() {
+            var dialablePhoneNumber = $("#selectCountryNumber").val() + $("#phoneNumber").val();
+            var filteredPhoneVal = normalString(dialablePhoneNumber) + ";";
+             $.ajax({
+                url: "@Url.Action("setVerifyPin", "BookNow")",
+                type: 'Post',
+                 data: { phoneNumber: filteredPhoneVal },
+                 success: function (response) {
+                     console.log(response);
+                }
+            });
+        }
+
+        function normalString(data) {
+            return data.replace(/\+/gi, '%2B');
         }
     </script>
 }

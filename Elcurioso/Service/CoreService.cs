@@ -1,8 +1,4 @@
-﻿using System;
-using System.Web;
-using Microsoft.AspNetCore.Hosting.Server;
-using Newtonsoft.Json;
-using WinPizzaData;
+﻿using WinPizzaData;
 
 namespace Elcurioso.Service
 {
@@ -12,7 +8,7 @@ namespace Elcurioso.Service
 
         public static async Task<String> LoadMenuList(string storeID, string imageDomain, string menuID)
 		{
-            string param = "{" + String.Format("%22DeMsgBody%22:%22{0}%22,%22DataObject%22:%22{1}%22,%22DeMsgType%22:{2},%22WinPizzaObject%22:%22{3}%22",
+			string param = "{" + String.Format("%22DeMsgBody%22:%22{0}%22,%22DataObject%22:%22{1}%22,%22DeMsgType%22:{2},%22WinPizzaObject%22:%22{3}%22",
 				storeID, imageDomain, 6, menuID) + "}";
 
             string endPoint = string.Format("{0}/LoadMenu?Data={1}", apiDomain, param);
@@ -28,7 +24,6 @@ namespace Elcurioso.Service
 
 		public static async Task<String> GetBookingTimeAv(string timeZone, string storeID, string unFormatedDate)
 		{
-
 			string param = "{" + String.Format("%22DataObject%22:%22{0}%22,%22DeMsgBody%22:%22{1}%22,%22DeMsgType%22:{2},%22WinPizzaObject%22:%22{3}%22",
                 Uri.EscapeDataString(timeZone), storeID, 6, unFormatedDate) + "}";
 
@@ -36,6 +31,22 @@ namespace Elcurioso.Service
 
 			var res = await LoadStoreHelperFunctoin.DoWebJsonServices(endPoint);
 			if (res.DeMsgType == WPUtility.WinPizzaEnums.MessageType.ACTIONSUCCESS)
+			{
+				return (string)res.WinPizzaObject;
+			}
+
+			return null;
+		}
+
+		public static async Task<String> SendVerifyPin(string phoneNumber, string storeID, string confirmPinTxt)
+		{
+			string param = "{" + String.Format("%22DataObject%22:%22%{0}%22,%22DeMsgBody%22:%22{1}%22,%22DeMsgType%22:{2},%22WinPizzaObject%22:%22{3}%22",
+				phoneNumber, storeID, 6, Uri.EscapeDataString(confirmPinTxt)) + "}";
+
+            string endPoint = string.Format("{0}/SendVerifyPin?Data={1}", apiDomain, param);
+
+			var res = await LoadStoreHelperFunctoin.DoWebJsonServices(endPoint);
+			if(res.DeMsgType == WPUtility.WinPizzaEnums.MessageType.ACTIONSUCCESS)
 			{
 				return (string)res.WinPizzaObject;
 			}

@@ -8,9 +8,17 @@ namespace Elcurioso.Controllers
     public class BookNowController : Controller
     {
         private readonly IConfiguration _config;
+
+        public string timezone;
+        public string storeID;
+        public string userPinMsg;
+
         public BookNowController(IConfiguration config)
         {
             _config = config;
+            timezone = _config.GetSection("TimeZone").Value;
+            storeID = _config.GetSection("StoreID").Value;
+            userPinMsg = _config.GetSection("UsePinMsg").Value;
         }
         public IActionResult Index()
         {
@@ -20,9 +28,14 @@ namespace Elcurioso.Controllers
         public async Task<IActionResult> getTimesList(string currentTime)
         {
             string trimmedTime = currentTime.Replace("\"", "");
-            string timezone = _config.GetSection("TimeZone").Value;
-            string storeID = _config.GetSection("StoreID").Value;
             var result = await CoreService.GetBookingTimeAv(timezone, storeID, trimmedTime);
+            return Ok(result);
+        }
+
+
+        public async Task<IActionResult> setVerifyPin(string phoneNumber)
+        {
+            var result = await CoreService.SendVerifyPin(phoneNumber, storeID, userPinMsg);
             return Ok(result);
         }
     }
