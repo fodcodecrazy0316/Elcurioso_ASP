@@ -15,6 +15,7 @@
     <Content Remove="wwwroot\images\" />
     <Content Remove="wwwroot\lib\datepicker\" />
     <Content Remove="wwwroot\fonts\" />
+    <Content Remove="wwwroot\lib\sweetalert2\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
@@ -24,6 +25,7 @@
     <Folder Include="Views\BookNow\" />
     <Folder Include="wwwroot\lib\datepicker\" />
     <Folder Include="wwwroot\fonts\" />
+    <Folder Include="wwwroot\lib\sweetalert2\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\Menu\" />

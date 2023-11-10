@@ -38,6 +38,12 @@ namespace Elcurioso.Controllers
             var result = await CoreService.SendVerifyPin(phoneNumber, storeID, userPinMsg);
             return Ok(result);
         }
+
+        public async Task<IActionResult> IsPINValid(string pinCode, string phoneNumber)
+        {
+            var result = await CoreService.IsPinValid(pinCode, storeID, phoneNumber);
+            return Ok(result);
+        }
     }
 }
 

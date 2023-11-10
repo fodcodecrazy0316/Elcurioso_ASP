@@ -1,7 +1,14 @@
 ﻿@inject IConfiguration Configuration
+
 @{
     ViewData["Title"] = "BookNow page";
     String imageDomain = Configuration.GetValue(typeof(string), "imageDomain").ToString();
+    String storeID = Configuration.GetValue(typeof(string), "StoreID").ToString();
+    String timeZone = Configuration.GetValue(typeof(string), "TimeZone").ToString();
+    String timeZoneID = Configuration.GetValue(typeof(string), "TimezoneID").ToString();
+    String serverEmail = Configuration.GetValue(typeof(string), "CalendarID").ToString();
+    String credentails = Configuration.GetValue(typeof(string), "Credentials").ToString();
+    int maxTimeAllocated = int.Parse(Configuration.GetValue(typeof(string), "MaxTimeAllocated").ToString());
 }
 
 @section Styles {
@@ -31,6 +38,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 9!important;
         }
 
         .modal-header {
@@ -200,6 +208,7 @@
             width: 100%;
             border: 1px solid #dbd9d7;
             border-radius: 8px;
+            outline: none;
         }
 
         .complete-booking-button {
@@ -212,8 +221,42 @@
             box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
         }
 
+        .complete-verify-button {
+            background-color: #f44336;
+            width: 100%;
+            height: 56px;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            border: none;
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+        }
+
         #booking-form {
             display: none;
+        }
+
+        .verify-modal-dialog {
+            max-width: 500px!important;
+        }
+
+        .sms-send-header {
+            color: white;
+            padding: 67px 50px 20px 50px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .v-label {
+            color: white;
+            font-size: 14px;
+        }
+
+        .sms-send-footer {
+            background: white;
+            padding-left: 60px;
+            padding-right: 60px;
+            color: black;
         }
     </style>
 }
@@ -250,27 +293,27 @@
                     <div class="pick-people-container">
                         <label>Number of adult</label>
                         <div>
-                            <select class="dropdown-select">
-                                <option>1 people</option>
-                                <option>2 people</option>
-                                <option>3 people</option>
-                                <option>4 people</option>
-                                <option>5 people</option>
-                                <option>6 people</option>
-                                <option>7 people</option>
-                                <option>8 people</option>
+                            <select class="dropdown-select" id="numAdultSelection">
+                                <option value="1">1 people</option>
+                                <option value="2">2 people</option>
+                                <option value="3">3 people</option>
+                                <option value="4">4 people</option>
+                                <option value="5">5 people</option>
+                                <option value="6">6 people</option>
+                                <option value="7">7 people</option>
+                                <option value="8">8 people</option>
                             </select>
                         </div>
                     </div>
                     <div class="pick-child-container">
                         <label>Number of childs</label>
                         <div>
-                            <select class="dropdown-select">
-                                <option>0 child</option>
-                                <option>1 child</option>
-                                <option>2 childs</option>
-                                <option>3 childs</option>
-                                <option>4 childs</option>
+                            <select class="dropdown-select" id="numChildSelection">
+                                <option value="0">0 child</option>
+                                <option value="1">1 child</option>
+                                <option value="2">2 childs</option>
+                                <option value="3">3 childs</option>
+                                <option value="4">4 childs</option>
                             </select>
                         </div>
                     </div>
@@ -293,15 +336,15 @@
             <button class="booking-item-button" id="booking-time-item" onclick="selectBookingTime(this)"></button>
             <div class="booking-time-list-header">Booking available times</div>
             <div id="booking-time-list"></div>
-            <form id="booking-form" onsubmit="completeBooking()">
+            <form id="booking-form" onsubmit="completeBooking();return false">
                 <div class="booking-form-row">
                     <div class="w-50">
                         <label class="elcurioso-label">First name<sup>*</sup></label>
-                        <input class="elcurioso-input" type="text" required />
+                        <input class="elcurioso-input" id="firstName" type="text" required />
                     </div>
                     <div class="w-50">
                         <label class="elcurioso-label">Last name<sup>*</sup></label>
-                        <input class="elcurioso-input" type="text" required />
+                        <input class="elcurioso-input" id="lastName" type="text" required />
                     </div>
                 </div>
                 <div class="booking-form-row">
@@ -320,12 +363,12 @@
                 </div>
                 <div class="booking-form-row" style="flex-direction: column;align-items: flex-start;gap: 0;">
                         <label class="elcurioso-label">Email<sup>*</sup></label>
-                        <input class="elcurioso-input" type="email" required formnovalidate/>
+                        <input class="elcurioso-input" id="email" type="email" required formnovalidate/>
                 </div>
                 <div class="booking-form-row">
                     <div class="w-50">
                         <label class="elcurioso-label">Select an occasion(optional)</label>
-                        <select class="elcurioso-input">
+                        <select class="elcurioso-input" id="booking-occasion">
                             <option value="birthday">Birthday</option>
                             <option value="anniversary">Anniversary</option>
                             <option value="date-night">Date night</option>
@@ -333,18 +376,18 @@
                     </div>
                     <div class="w-50">
                         <label class="elcurioso-label">Add a special request(optional)</label>
-                        <input class="elcurioso-input" />
+                        <input class="elcurioso-input" id="note"/>
                     </div>
                 </div>
                 <div class="booking-form-row" style="flex-direction: column; align-items: flex-start">
                     <label class="checkbox-container">
                         Sign me up to receive dining offers and news from this restaurant by email.
-                        <input type="checkbox" checked />
+                        <input type="checkbox" checked id="isEmail"/>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container">
                         Yes, I want to get text updates and reminders about my bookings.
-                        <input type="checkbox" checked />
+                        <input type="checkbox" checked id="isSms"/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -365,16 +408,45 @@
     </div>
 </div>
 
+<div class="modal" id="verify_modal">
+    <div class="modal-dialog modal-lg verify-modal-dialog">
+        <div class="modal-body">
+            <div class="sms-send-header">
+                We need to verify you. Please enter verification code. We sent you a pin by SMS on <span id="smsPhoneNumber"></span>
+            </div>
+            <div class="sms-send-body">
+                <form id="verify-pin-form" onsubmit="verifyPinCode(); return false">
+                    <div class="booking-form-row">
+                        <div class="w-70">
+                            <label class="v-label">Verification Code</label>
+                            <input class="elcurioso-input" type="text" required id="verify_code"/>
+                        </div>
+                        <div class="w-30">
+                            <input class="complete-verify-button" type="submit">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="sms-send-footer">
+                If you do not receive your access code within 60 seconds, <a style="color: blue;cursor: pointer" onclick="goBackToBookingModal()"> try sending again. </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="~/lib/datepicker/datepicker.js"></script>
     <script>
         hideLoader();
+
         var datePicker = $('[data-toggle="datepicker"]');
         var bookingTimeDate = $("#booking-time-date");
         var bookingTimeList = $("#booking-time-list");
         var bookingTimeListModal = $("#time_list_modal");
-        var dateTime = "";
+        var verifyModal = $("#verify_modal");
         var bookingFormContainer = $("#booking-form");
+        var selectedTime = "";
+        var dateTime = "";
 
         datePicker.datepicker({
             startDate: new Date(),
@@ -501,8 +573,21 @@
             bookingTimeListModal.css("display", "none");
         }
 
+        function showTimeListModal() {
+            bookingTimeListModal.css("display", "flex");
+        }
+
+        function hideVerifyModal() {
+            verifyModal.css("display", "none");
+        }
+
+        function showVerifyModal() {
+            verifyModal.css("display", "flex");
+        }
+
         function selectBookingTime(evt) {
             if (evt.innerText != "") {
+                selectedTime = evt.innerText;
                 $("#booking-time-list .booking-item-button-active").removeClass("booking-item-button-active");
                 evt.classList.add("booking-item-button-active")
                 bookingFormContainer.show();
@@ -510,6 +595,8 @@
         }
 
         function completeBooking() {
+            showLoader();
+            closeTimeListModal();
             var dialablePhoneNumber = $("#selectCountryNumber").val() + $("#phoneNumber").val();
             var filteredPhoneVal = normalString(dialablePhoneNumber) + ";";
              $.ajax({
@@ -517,13 +604,104 @@
                 type: 'Post',
                  data: { phoneNumber: filteredPhoneVal },
                  success: function (response) {
-                     console.log(response);
+                     hideLoader();
+                     showVerifyModal();
                 }
-            });
+             });
+        }
+
+        function goBackToBookingModal() {
+            hideVerifyModal();
+            showTimeListModal();
         }
 
         function normalString(data) {
             return data.replace(/\+/gi, '%2B');
+        }
+
+        function verifyPinCode() {
+            showLoader();
+            var pinCode = $("#verify_code").val();
+            var dialablePhoneNumber = $("#selectCountryNumber").val() + $("#phoneNumber").val();
+            var filteredPhoneVal = normalString(dialablePhoneNumber);
+
+            $.ajax({
+                url: "@Url.Action("IsPINValid", "BookNow")",
+                type: "Post",
+                data: {
+                    pinCode: pinCode,
+                    phoneNumber: filteredPhoneVal
+                },
+                success: function (response) {
+                    hideLoader();
+                    var res = JSON.parse(response);
+                    if (res.DeMsgBody == 6 && res.WinPizzaObject == "Varified") {
+                        saveBooking();
+                    } else {
+                        saveBooking();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'The pin is not valid, you can retry again.'
+                        });
+                    }
+                }
+            });
+        }
+
+        function saveBooking() {
+            var dd = new Date();
+            dateTime = datePicker.val();
+            var dateTimeList = dateTime.split("/");
+            var year = parseInt(dateTimeList[2]);
+            var month = parseInt(dateTimeList[1]) - 1;
+            var day = parseInt(dateTimeList[0]);
+
+            var hours = parseInt(selectedTime.split(":")[0]);
+            var minutes = parseInt(selectedTime.split(":")[1]);
+
+            dd.setFullYear(year, month, day);
+            dd.setHours(hours);
+            dd.setMinutes(minutes);
+
+            let sDate = dd;
+            let eDate = new Date(sDate);
+            eDate.setHours(eDate.getHours() + parseInt('@maxTimeAllocated'));
+            var phonenumber = $("#phoneNumber").val();
+
+            const JsonData = {
+                AppointmentID: "",
+                Credentials: '@credentails',
+                DeAddress: null,
+                DeDateEnd: eDate,
+                DeDateStart: sDate,
+                DeDeposit: null,
+                Email: $("#isEmail").is(':checked'),
+                EmailValue: $("#email").val(),
+                FCMToken: "",
+                ID: 0,
+                Name: $("#firstName").val() + " " + $("#lastName").val(),
+                Note: $("#note").val() + "(" + $("#booking-occasion").val() + ")",
+                NumAdualt: $("#numAdultSelection").val(),
+                NumChild: $("#numChildSelection").val(),
+                PeopleID: "-1",
+                Phone: "0" + phonenumber,
+                PhoneWithPrefix: normalString(phonenumber),
+                ProductName: "",
+                SectionName: "",
+                ServerEmail: '@serverEmail',
+                ServerID: 0,
+                ServerName: "",
+                SMS: $("#isSMS").is(':checked'),
+                Status: 5,
+                StoreID: '@storeID',
+                TableName: "",
+                TimezoneID: '@timeZoneID',
+                TimeZone: '@timeZone',
+                TransID: ''
+            }
+
+            console.log(JsonData);
         }
     </script>
 }
